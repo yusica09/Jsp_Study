@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>[실습] 여행지 선택</title>
+<script type="text/javascript">
+	window.onload=function(){
+		const myForm = document.getElementById('myForm');
+		//이벤트연결
+		myForm.onsubmit=function(){
+			const name = document.getElementById("name");
+			if(name.value.trim()==''){
+				alert('이름을 입력하세요!');
+				name.value=''; //공백이 있을 경우 공백제거
+				name.focus();
+				return false;
+			}
+			const cities = document.getElementsByClassName('cb-city');
+			let num = 0;
+			for (let i = 0; i < cities.length; i++) {
+				if(cities[i].checked) num++;
+			}
+			
+			if(num < 2) {
+				alert('여행지는 2개 이상 선택해야합니다.');
+				return false;
+			}
+			
+		};
+	};
+</script>
+</head>
+<body>
+<h3>여행지를 선택하세요(2개이상 선택)</h3>
+<form id="myForm" method="post" action="/servletJsp/travel">
+	이름 : <input id="name" type="text" name="name"><br>
+	여행지 선택<br>
+	<input type="checkbox" name="city" value="서울" class="cb-city">서울
+	<input type="checkbox" name="city" value="뉴욕" class="cb-city">뉴욕
+	<input type="checkbox" name="city" value="런던" class="cb-city">런던
+	<input type="checkbox" name="city" value="파리" class="cb-city">파리
+	<br>
+	<input type="submit" value="전송">
+</form>
+</body>
+</html>
