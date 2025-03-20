@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>[실습]성적처리</title>
+<script type="text/javascript">
+	window.onload=function(){
+		const myForm = document.getElementById('myForm');
+		//이벤트연결
+		myForm.onsubmit=function(){
+			var korean = document.getElementById("korean");
+			return check(korean);
+			
+			var english = document.getElementById('english');
+			return check(english);
+			
+			var math = document.getElementById('math');
+			return check(math);
+			
+		};
+		
+		function check(input) {
+		    let num = Number(input.value.trim());
+
+		    if (input.value.trim() === '' || isNaN(num)) {
+		        alert('정수만 입력해주세요.');
+		        input.value = '';
+		        input.focus();
+		        return false;
+		    }
+
+		    if (num < 0 || num > 100) {
+		        alert('0~100 사이의 숫자만 입력해주세요.');
+		        input.value = '';
+		        input.focus();
+		        return false;
+		    }
+
+		    return true;
+		}
+	};
+</script>
+</head>
+<body>
+<form id="myForm" method="post" action="/servletJsp/score">
+	<ul>
+		<li>
+			<label for="korean">국어</label>
+			<input type="text" name="korean" id="korean">
+		</li>
+		<li>
+			<label for="english">영어</label>
+			<input type="text" name="english" id="english">
+		</li>
+		<li>
+			<label for="math">수학</label>
+			<input type="text" name="math" id="math">
+		</li>
+	</ul>
+	<input type="submit" value="전송">
+</form>
+</body>
+</html>
