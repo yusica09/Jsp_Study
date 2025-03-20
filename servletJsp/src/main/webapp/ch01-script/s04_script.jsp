@@ -17,13 +17,16 @@
 	평균 : 91
  --%>
  <%!
+ 	// 선언부 : 변수(멤버 변수) 선언, 메서드 선언
  	String[] cours = {"국어","영어","수학"};
  	int[] score = {88,99,86};
- 	int sum;
- 	double avg;
  %>
  
-<%for(int i=0;i<score.length;i++){
+<%
+	// 스크립트릿 : 변수(지역변수) 선언, 연산자, 제어문, 출력
+ 	int sum=0;
+ 	double avg;
+	for(int i=0;i<score.length;i++){
 	sum+=score[i];%>
 <%=cours[i] %> : <%=score[i] %> <br>
 <%}
