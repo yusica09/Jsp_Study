@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0">
   <display-name>servletJsp</display-name>
+  <!-- 응답 상태 코드 별 에러 페이지 지정 시작 -->
+  <error-page>
+  	<error-code>404</error-code>
+  	<location>/ch05-errorPage/error/error404.jsp</location>
+  </error-page>
+  <error-page>
+  	<error-code>500</error-code>
+  	<location>/ch05-errorPage/error/error500.jsp</location>
+  </error-page>
+  <!-- 응답 상태 코드 별 에러 페이지 지정 끝 -->
+  <!-- 예외 타입 별 에러 페이지 지정 시작 -->
+  <error-page>
+  	<exception-type>java.lang.NullPointerException</exception-type>
+  	<location>/ch05-errorPage/error/errorNullPointer.jsp</location>
+  </error-page>
+  <!-- 예외 타입 별 에러 페이지 지정 끝 -->
+  <!-- 세션 유지 시간 지정 (분단위로 지정) 시작 -->
+  <session-config>
+  <session-timeout>50</session-timeout>
+  </session-config>
+  <!-- 세션 유지 시간 지정 (분단위로 지정) 끝 -->
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.jsp</welcome-file>
