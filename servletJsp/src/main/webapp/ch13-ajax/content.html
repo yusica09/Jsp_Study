@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>회원정보 관리</title>
+<style type="text/css">
+	form{
+		width:500px;
+		margin:10px auto;
+	}
+	ul{
+		padding:0;
+		margin:0;
+		list-style:none;
+	}
+	ul li{
+		padding:0;
+		margin:0 0 10px 0;
+	}
+	label{
+		width:150px;
+		float:left;
+	}
+	table{
+		border:solid 1px gray;
+		width:500px;
+		margin:0 auto;
+		border-collapse:collapse;
+	}
+	td{
+		border:solid 1px gray;
+		padding:10px;
+	}
+</style>
+<script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//목록
+		function selectList(){
+			//서버와 통신
+			$.ajax({
+				url:'getPeopleJSON.jsp',
+				dataType:'json',
+				success:function(param){
+					//table의 내부 내용물 제거(초기화) 
+					// - 초기화 안하면 이미 있던 테이블도 계속 출력된다.
+					$('#output').empty();
+					
+					$(param).each(function(index, item){
+						let output = '';
+						output += '<tr>';
+						output += '<td>' + item.id + '</td>';
+						output += '<td>' + item.name + '</td>';
+						output += '<td>' + item.job + '</td>';
+						output += '<td>' + item.address + '</td>';
+						output += '<td>' + item.blood_type + '</td>';
+						output += '<td>' + item.reg_date + '</td>';
+						output += '</tr>';
+						
+						$('#output').append(output);
+					});
+				},
+				error:function(){
+					alert('네트워크 오류 발생!');
+				}
+			});
+		}
+		//회원 등록을 위한 이벤트 연결
+		$('#insert_form').submit(function(event){
+			// 입력 양식의 내용을 요청 매개 변수 문자열로 만듦
+			//(파라미터 네임과 value의 쌍, 인코딩 처리)
+			/*
+			serialize()는 form 요소 내부의 모든 입력값을 key=value&key2=value2 형태로 만듦
+			예를 들어, <input name="id" value="abc">  → "id=abc"
+			*/
+			let input_data = $(this).serialize();
+			//서버와 통신
+			$.ajax({
+				url:'insertPerson.jsp',
+				type:'post',
+				data:input_data,
+				dataType:'json',
+				success:function(param){
+					if(param.result == 'success'){
+						//회원 가입 성공
+						alert('회원 가입 완료');
+						//초기화
+						$('#insert_form input[type="text"]').val('');
+						//목록호출
+						selectList();
+					}else{
+						//회원 가입 실패
+						alert('회원 가입 오류 발생');
+					}
+				},
+				error:function(){
+					alert('네트워크 오류 발생');
+				}
+			});
+			
+			
+			/*
+			원래 <form>은 submit 시 페이지를 이동시키지만, 지금은 Ajax로 전송하므로 기본 동작을 막기위함.
+			이걸 안 하면 페이지가 새로고침되거나 이동해버려서 Ajax 처리 의미가 없어짐. -> 비동기처리 위함
+			*/
+			//기본 이벤트 제거
+			event.preventDefault();
+		});
+		//초기 화면 데이터 표시
+		selectList();
+	});
+</script>
+</head>
+<body>
+<form id="insert_form">
+		<fieldset>
+			<legend>회원가입</legend>
+			<ul>
+				<li>
+					<label for="id">아이디</label>
+					<input type="text" name="id" id="id">
+				</li>
+				<li>
+					<label for="name">이름</label>
+					<input type="text" name="name" id="name">
+				</li>
+				<li>
+					<label for="job">직업</label>
+					<input type="text" name="job" id="job">
+				</li>
+				<li>
+					<label for="address">주소</label>
+					<input type="text" name="address" id="address">
+				</li>
+				<li>
+					<label for="blood_type">혈액형</label>
+					<input type="text" name="blood_type" id="blood_type">
+				</li>
+				<li>
+					<input type="submit" value="추가">
+				</li>
+			</ul>
+		</fieldset>
+</form>
+<table id="output"></table>
+</body>
+</html>
+
+
+
+
+
