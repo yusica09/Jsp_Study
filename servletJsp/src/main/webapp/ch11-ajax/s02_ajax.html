@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jQuery를 이용한 비동기 통신 구현</title>
+<script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//서버에 데이터를 전송하고 서버에서 보낸 데이터(text)를 처리 : get방식(기본값)
+		$.ajax({
+			url:'myParam.jsp', //요청 URL
+			data:{name:'하하',age:21},
+			success:function(param){
+				$('body').append(param);
+			}
+		});
+	});
+</script>
+</head>
+<body>
+
+</body>
+</html>

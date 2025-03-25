@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>jQuery를 이용한 비동기 통신 구현</title>
+<script type="text/javascript" src="../js/jquery-3.7.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		//JSON(JavaScript Object Notation) 데이터를 읽어옴
+		$.ajax({
+			url:'myJSON.jsp',
+			dataType:'json', //서버로부터 전송받은 데이터의 타입
+			success:function(param){
+				$(param).each(function(index, item){
+					//index : 배열의 인덱스
+					//item : 배열의 요소
+					let output = '';
+					output += '<div>';
+					output += '<h1>' + item.name + '</h1>';
+					output += '<p>' + item.job + '</p>';
+					output += '<p>' + item.age + '</p>';
+					output += '</div>';
+					
+					$('#output').append(output);
+				});
+			}
+		});
+	});
+</script>
+</head>
+<body>
+	<div id="output"></div>
+</body>
+</html>
