@@ -112,7 +112,7 @@ public class MemberDAO {
 			if(rs.next()) {
 				member = new MemberVO();
 				member.setId(rs.getString("id"));
-				member.setNum(rs.getInt("num"));
+				member.setNum(rs.getLong("num"));
 				member.setPasswd(rs.getString("passwd"));
 			}
 			
@@ -125,8 +125,78 @@ public class MemberDAO {
 		return member;
 	}
 	//회원정보수정
-	//회원탈퇴(회원정보 삭제)
+	public void updateMember(MemberVO member) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		int cnt = 0;
+		
+		try {
+			//커넥션풀로부터 커넥션을 할당
+			conn = DBUtil.getConnection();
+			//SQL문 작성
+			sql = "UPDATE smember SET name=?, passwd=?, email=?, phone=? WHERE num=?";
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt.setString(++cnt, member.getName());
+			pstmt.setString(++cnt, member.getPasswd());
+			pstmt.setString(++cnt, member.getEmail());
+			pstmt.setString(++cnt, member.getPhone());
+			pstmt.setLong(++cnt, member.getNum());
+			
+			pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+	}
 	
+	//회원탈퇴(회원정보 삭제)
+	public void deleteMember(long num) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
+		String sql = null;
+		
+		try {
+			//커넥션풀로부터 커넥션 할당
+			conn = DBUtil.getConnection();
+			//오토커밋해제
+			conn.setAutoCommit(false);
+			
+			//게시판 데이터 삭제
+			sql = "DELETE FROM sboard WHERE num=?";
+			//PreparedStatement 객체 생성
+			pstmt = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt.setLong(1, num);
+			//SQL문 실행
+			pstmt.executeUpdate();
+			
+			//회원 정보 삭제
+			sql = "DELETE FROM smember WHERE num=?";
+			//PreparedStatement 객체 생성
+			pstmt2 = conn.prepareStatement(sql);
+			//?에 데이터 바인딩
+			pstmt2.setLong(1, num);
+			//SQL문 실행
+			pstmt2.executeUpdate();
+			
+			//모든 SQL문이 오류 없이 정상적으로 수행되면 커밋
+			conn.commit();
+			
+		}catch(Exception e) {
+			//SQL문이 하나라도 오류가 있으면 롤백
+			conn.rollback();
+			throw new Exception(e);
+		}finally {
+			DBUtil.executeClose(null, pstmt2, null);
+			DBUtil.executeClose(null, pstmt, conn);
+		}
+	}
 }
 
 
