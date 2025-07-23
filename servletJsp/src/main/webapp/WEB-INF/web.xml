@@ -22,6 +22,30 @@
   <session-timeout>50</session-timeout>
   </session-config>
   <!-- 세션 유지 시간 지정 (분단위로 지정) 끝 -->
+  <!-- MVC패턴을 사용하기 위한 서블릿 설정 시작 -->
+  <!-- 
+  <servlet>
+  	<servlet-name>DispatcherServlet</servlet-name>
+  	<servlet-class>kr.web.mvc.DispatcherServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>DispatcherServlet</servlet-name>
+  	<url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+   -->
+   <servlet>
+   	<servlet-name>DispatcherServlet</servlet-name>
+   	<servlet-class>kr.web.mvc.DispatcherServlet2</servlet-class>
+   	<init-param>
+   		<param-name>propertiesPath</param-name>
+   		<param-value>/WEB-INF/ActionMap.properties</param-value>
+   	</init-param>
+   </servlet>
+   <servlet-mapping>
+  	<servlet-name>DispatcherServlet</servlet-name>
+  	<url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  <!-- MVC패턴을 사용하기 위한 서블릿 설정 끝 -->
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.jsp</welcome-file>

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>학생 점수 등록</title>
+<title>게시판 글 등록</title>
 <link rel="stylesheet" href="../css/style.css" type="text/css">
 </head>
 <body>
